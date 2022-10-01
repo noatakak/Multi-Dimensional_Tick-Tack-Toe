@@ -6,6 +6,10 @@ using UnityEngine.EventSystems;
 
 public class GamePlayer : MonoBehaviour
 {
+    public bool isMDGame = false;
+    public Material flatWinner;
+    public GameObject flatBoard;
+
     public Material activePlayerColor;
     public Material redMat;
     public Material blueMat;
@@ -22,7 +26,6 @@ public class GamePlayer : MonoBehaviour
     ArrayList AllSelected = new ArrayList();
     ArrayList BlueSelected = new ArrayList();
     ArrayList RedSelected = new ArrayList();
-    ArrayList PlayerList;
     public bool turnPlayed;
     public bool gameWon = false;
     public bool blueWin;
@@ -105,23 +108,43 @@ public class GamePlayer : MonoBehaviour
             {
                 RaycastHit clickedObj = new RaycastHit();
                 bool hit1 = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out clickedObj);
-                Debug.Log(clickedObj.transform.gameObject.name);
+                //Debug.Log(clickedObj.transform.gameObject.name);
                 if (hit1 && AllSelected.Contains(clickedObj.transform.gameObject) == false)
                 {
-                    //Debug.Log("Clicked On: " + clickedObj.transform.gameObject.name);
                     if (clickedObj.transform.gameObject.name != "BackWall" && clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material.name != redMat.name && clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material.name != blueMat.name)
                     {
-                        clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = activePlayerColor;
-                        AllSelected.Add(clickedObj.transform.gameObject);
-                        turnPlayed = true;
-
-                        if (activePlayerColor == blueMat)
+                        if (!isMDGame)
                         {
-                            BlueSelected.Add(clickedObj.transform.gameObject.name);
+                            clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = activePlayerColor;
+                            AllSelected.Add(clickedObj.transform.gameObject);
+                            turnPlayed = true;
+
+                            if (activePlayerColor == blueMat)
+                            {
+                                BlueSelected.Add(clickedObj.transform.gameObject.name);
+                            }
+                            else
+                            {
+                                RedSelected.Add(clickedObj.transform.gameObject.name);
+                            }
                         }
                         else
                         {
-                            RedSelected.Add(clickedObj.transform.gameObject.name);
+                            clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = hoverMat;
+                            flatBoard.GetComponent<Play2DGame>().startFlat();
+                            flatWinner = flatBoard.GetComponent<Play2DGame>().flatWinner;
+                            clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = flatWinner;
+                            AllSelected.Add(clickedObj.transform.gameObject);
+                            turnPlayed = true;
+
+                            if (flatWinner == blueMat)
+                            {
+                                BlueSelected.Add(clickedObj.transform.gameObject.name);
+                            }
+                            else
+                            {
+                                RedSelected.Add(clickedObj.transform.gameObject.name);
+                            }
                         }
                     }
 
@@ -281,6 +304,11 @@ public class GamePlayer : MonoBehaviour
 
         
 
+    }
+
+    public void makeMDGame()
+    {
+        isMDGame = true;
     }
 
     public void startGame()

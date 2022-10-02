@@ -148,7 +148,7 @@ public class GamePlayer : MonoBehaviour
                             clickedCube = clickedObj.transform.gameObject;
                             clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = deafultMat;
                             flatBoard.GetComponent<Play2DGame>().startFlat();
-                            readytoWait = flatBoard.GetComponent<Play2DGame>().flatGameWon;
+                            readytoWait = flatBoard.GetComponent<Play2DGame>().flatgameWon;
                             
                             flatWinner = flatBoard.GetComponent<Play2DGame>().flatWinner;
                             clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = flatWinner;

@@ -13,6 +13,7 @@ public class Play2DGame : MonoBehaviour
     public Material redMat;
     public Material blueMat;
     public Material currentTurn;
+    public Material defaultMat;
     public GameObject player;
     public bool flatStarted = false;
     public Material flatWinner;
@@ -22,7 +23,6 @@ public class Play2DGame : MonoBehaviour
     public GameObject selectedCube;
     public GameObject slidingUI;
 
-    public bool flatGameWon = false;
     bool scaleBoard = false;
 
 
@@ -59,35 +59,56 @@ public class Play2DGame : MonoBehaviour
     {
         if (scaleBoard)
         {
-            StartCoroutine(growboard(1.0f));
-            StartCoroutine(slideSquares(1.0f,1));
+            StartCoroutine(growboard(1.0f, 1));
+            StartCoroutine(slideSquares(1.0f, 1));
             scaleBoard = false;
         }
-
-        if (currentTurn == blueMat)
-        {
-
-        }
-        else
-        {
-
-        }
-
-
-
-
-
-
-
-
+        
         checkForFlatWin();
-        if (flatGameWon)
+        if (flatblueWin || flatredWin || flatdraw)
         {
+            if (flatredWin)
+            {
+                flatRound.GetComponent<Image>().color = Color.Lerp(Color.grey, Color.red, Time.deltaTime * 0.5f);
+                selectedCube.GetComponent<MeshRenderer>().material = redMat;
+            }else if (flatblueWin)
+            {
+                flatRound.GetComponent<Image>().color = Color.Lerp(Color.grey, Color.blue, Time.deltaTime * 0.5f);
+                selectedCube.GetComponent<MeshRenderer>().material = blueMat;
+            }
+            else
+            {
+                selectedCube.GetComponent<MeshRenderer>().material = defaultMat;
+            }
+            
             StartCoroutine(slideSquares(1.0f, -1));
+            endFlatGame();
         }
 
     }
 
+    private void endFlatGame()
+    {
+        flatStarted = false;
+        player.GetComponent<GamePlayer>().isFlat = false;
+
+
+        if (firstTurn == blueMat)
+        {
+            player.GetComponent<GamePlayer>().activePlayerColor = redMat;
+        }
+        else
+        {
+            player.GetComponent<GamePlayer>().activePlayerColor = blueMat;
+        }
+
+        flatgameWon = false;
+        flatblueWin = false;
+        flatredWin = false;
+        flatdraw = false;
+        StartCoroutine(growboard(1.0f, -1));
+
+    }
 
     IEnumerator slideSquares(float time, int direc)
     {
@@ -122,24 +143,49 @@ public class Play2DGame : MonoBehaviour
     }
     
 
-    IEnumerator growboard(float time)
+    IEnumerator growboard(float time, int direc)
     {
-        float i = 0;
-        float rate = .5f / time;
-
-        Vector3 toSize = transform.localScale;
-        Vector3 fromZero = Vector3.zero;
-        while (i < 1)
+        if (direc == 1)
         {
-            i += Time.deltaTime * rate;
-            flatRound.transform.localScale = Vector3.Lerp(fromZero, toSize, i);
-            yield return 0;
+            float i = 0;
+            float rate = .5f / time;
+
+            Vector3 toSize = transform.localScale;
+            Vector3 fromZero = Vector3.zero;
+            while (i < 1)
+            {
+                i += Time.deltaTime * rate;
+                flatRound.transform.localScale = Vector3.Lerp(fromZero, toSize, i);
+                yield return 0;
+            }
+        }
+        else
+        {
+            float i = 0;
+            float rate = .5f / time;
+
+            Vector3 fromSize = transform.localScale;
+            Vector3 toZero = Vector3.zero;
+            while (i < 1)
+            {
+                i += Time.deltaTime * rate;
+                flatRound.transform.localScale = Vector3.Lerp(fromSize, toZero, i);
+                yield return 0;
+            }
         }
     }
 
     public void startFlat()
     {
         currentTurn = player.GetComponent<GamePlayer>().activePlayerColor;
+        if (currentTurn.name == "Blue0Mat")
+        {
+            firstTurn = blueMat;
+        }
+        else
+        {
+            firstTurn = redMat;
+        }
         flatStarted = true;
         selectedCube = player.GetComponent<GamePlayer>().clickedCube.transform.gameObject;
         //player.SetActive(false);
@@ -160,6 +206,9 @@ public class Play2DGame : MonoBehaviour
             flatBlueSelected.Add(square.gameObject.name);
             flatAllSelected.Add(square.gameObject.name);
             player.GetComponent<GamePlayer>().flatTurnPlayed = true;
+            player.GetComponent<GamePlayer>().turnPlayed = true;
+            player.GetComponent<GamePlayer>().activePlayerColor = redMat;
+            currentTurn = redMat;
         }
         else
         {
@@ -168,6 +217,8 @@ public class Play2DGame : MonoBehaviour
             flatRedSelected.Add(square.gameObject.name);
             flatAllSelected.Add(square.gameObject.name);
             player.GetComponent<GamePlayer>().flatTurnPlayed = true;
+            player.GetComponent<GamePlayer>().activePlayerColor = blueMat;
+            currentTurn = blueMat;
         }
     }
 
@@ -208,7 +259,7 @@ public class Play2DGame : MonoBehaviour
             }
         }
 
-        if (flatAllSelected.Count == 9 && !flatGameWon)
+        if (flatAllSelected.Count == 9 && !flatgameWon)
         {
             flatdraw = true;
         }

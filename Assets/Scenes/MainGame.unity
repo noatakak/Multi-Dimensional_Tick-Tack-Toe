@@ -4791,6 +4791,7 @@ MonoBehaviour:
   redMat: {fileID: 2100000, guid: c707ee704cf7c6341933e86895f1e453, type: 2}
   blueMat: {fileID: 2100000, guid: 8b538dadbd9a2704bbd6c67ced23c52f, type: 2}
   currentTurn: {fileID: 2100000, guid: 51e2f89336dcd0f44b6db0f23c800c1a, type: 2}
+  defaultMat: {fileID: 2100000, guid: 51e2f89336dcd0f44b6db0f23c800c1a, type: 2}
   player: {fileID: 111886108}
   flatStarted: 0
   flatWinner: {fileID: 2100000, guid: 90d3ddd3b99574b4983b8e3675ea6d49, type: 2}
@@ -4799,7 +4800,6 @@ MonoBehaviour:
   flatRound: {fileID: 0}
   selectedCube: {fileID: 0}
   slidingUI: {fileID: 736978644}
-  flatGameWon: 0
   sq0: {fileID: 802731509}
   sq1: {fileID: 559215142}
   sq2: {fileID: 771317290}
@@ -5957,7 +5957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6180564370041258242, guid: be19f5dba1659494e8270a79ffb2e49f, type: 3}
       propertyPath: m_SortingOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6180564370041258245, guid: be19f5dba1659494e8270a79ffb2e49f, type: 3}
       propertyPath: m_UiScaleMode
@@ -8132,7 +8132,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Mulit-Dimensional
+  m_text: 'Multi-Dimensional
 
     Tic-Tac-Toe'
   m_isRightToLeft: 0

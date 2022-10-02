@@ -7,8 +7,10 @@ using UnityEngine.EventSystems;
 public class GamePlayer : MonoBehaviour
 {
     public bool isMDGame = false;
+    public bool isFlat;
     public Material flatWinner;
     public GameObject flatBoard;
+    public bool flatTurnPlayed;
 
     public Material activePlayerColor;
     public Material redMat;
@@ -64,6 +66,11 @@ public class GamePlayer : MonoBehaviour
     public GameObject cube25;
     public GameObject cube26;
 
+    public GameObject clickedCube;
+
+
+    public bool readytoWait = false;
+
 
 
 
@@ -90,6 +97,12 @@ public class GamePlayer : MonoBehaviour
             rotspeed = 0;
             winScreen.SetActive(true);
 
+        }
+
+        if (isFlat)
+        {
+            gameInProgress = false;
+            rotspeed = 0;
         }
 
 
@@ -130,8 +143,13 @@ public class GamePlayer : MonoBehaviour
                         }
                         else
                         {
-                            clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = hoverMat;
+                            isFlat = true;
+                            flatBoard.GetComponent<Play2DGame>().currentTurn = activePlayerColor;
+                            clickedCube = clickedObj.transform.gameObject;
+                            clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = deafultMat;
                             flatBoard.GetComponent<Play2DGame>().startFlat();
+                            readytoWait = flatBoard.GetComponent<Play2DGame>().flatGameWon;
+                            
                             flatWinner = flatBoard.GetComponent<Play2DGame>().flatWinner;
                             clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = flatWinner;
                             AllSelected.Add(clickedObj.transform.gameObject);

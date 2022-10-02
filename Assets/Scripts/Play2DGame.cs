@@ -36,6 +36,8 @@ public class Play2DGame : MonoBehaviour
     public GameObject sq7;
     public GameObject sq8;
 
+    public GameObject[] squareList = new GameObject[9];
+
     public Text mark;
 
     ArrayList flatAllSelected = new ArrayList();
@@ -51,7 +53,15 @@ public class Play2DGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        squareList[0] = sq0;
+        squareList[1] = sq1;
+        squareList[2] = sq2;
+        squareList[3] = sq3;
+        squareList[4] = sq4;
+        squareList[5] = sq5;
+        squareList[6] = sq6;
+        squareList[7] = sq7;
+        squareList[8] = sq8;
     }
 
     // Update is called once per frame
@@ -108,10 +118,23 @@ public class Play2DGame : MonoBehaviour
         flatdraw = false;
         StartCoroutine(growboard(1.0f, -1));
 
+        /*for (int i = 0; i < squareList.Length; i ++)
+        {
+            squareList[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
+            squareList[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "";
+        }*/
+        flatAllSelected = new ArrayList();
+        flatBlueSelected = new ArrayList();
+        flatRedSelected = new ArrayList();
+        //Destroy(flatRound);
+        player.GetComponent<GamePlayer>().gameInProgress = true;
+
     }
 
     IEnumerator slideSquares(float time, int direc)
     {
+
+
         if (direc == 1)
         {
             float i = 0;
@@ -137,6 +160,7 @@ public class Play2DGame : MonoBehaviour
             {
                 i += Time.deltaTime * rate;
                 slidingUI.transform.localPosition = Vector3.Lerp(fromPos, toPos, i);
+
                 yield return 0;
             }
         }
@@ -170,6 +194,10 @@ public class Play2DGame : MonoBehaviour
             {
                 i += Time.deltaTime * rate;
                 flatRound.transform.localScale = Vector3.Lerp(fromSize, toZero, i);
+                if (i == .99)
+                {
+                    Destroy(flatRound);
+                }
                 yield return 0;
             }
         }
@@ -182,7 +210,7 @@ public class Play2DGame : MonoBehaviour
         {
             firstTurn = blueMat;
         }
-        else
+        else if((currentTurn.name == "RedXMat"))
         {
             firstTurn = redMat;
         }
@@ -197,7 +225,7 @@ public class Play2DGame : MonoBehaviour
         scaleBoard = true;
     }
 
-    public void markSqaure(Button square)
+    public void markSquare(Button square)
     {
         if (currentTurn == blueMat)
         {

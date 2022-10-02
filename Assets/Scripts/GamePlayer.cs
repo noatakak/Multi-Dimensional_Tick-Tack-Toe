@@ -104,6 +104,10 @@ public class GamePlayer : MonoBehaviour
             gameInProgress = false;
             rotspeed = 0;
         }
+        else
+        {
+            rotspeed = 0.1f;
+        }
 
 
         if (gameInProgress)
@@ -136,7 +140,7 @@ public class GamePlayer : MonoBehaviour
                             {
                                 BlueSelected.Add(clickedObj.transform.gameObject.name);
                             }
-                            else
+                            else if(activePlayerColor == redMat)
                             {
                                 RedSelected.Add(clickedObj.transform.gameObject.name);
                             }
@@ -159,11 +163,12 @@ public class GamePlayer : MonoBehaviour
                             {
                                 BlueSelected.Add(clickedObj.transform.gameObject.name);
                             }
-                            else
+                            else if (activePlayerColor == redMat)
                             {
                                 RedSelected.Add(clickedObj.transform.gameObject.name);
                             }
                         }
+
                     }
 
                 }

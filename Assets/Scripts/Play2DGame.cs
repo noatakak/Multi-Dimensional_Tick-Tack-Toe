@@ -70,6 +70,30 @@ public class Play2DGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        String allred = "Red: ";
+        String allblue = "Blue: ";
+        String all = "Total: ";
+
+        for (int a = 0; a < flatRedSelected.Count; a++)
+        {
+            allred = allred + flatRedSelected[a].ToString() + ", ";
+        }
+        for (int a = 0; a < flatBlueSelected.Count; a++)
+        {
+            allblue = allblue + flatBlueSelected[a].ToString() + ", ";
+        }
+        for (int a = 0; a < flatAllSelected.Count; a++)
+        {
+            all = all + flatAllSelected[a].ToString() + ", ";
+
+            Debug.Log(all);
+            Debug.Log(allred);
+            Debug.Log(allblue);
+        }
+
+
+
         if (currentTurn == redMat)
         {
             blueOverrideButton.SetActive(false);
@@ -334,6 +358,8 @@ public class Play2DGame : MonoBehaviour
         {
             if (currentTurn == blueMat)
             {
+                flatRedSelected.Remove(square.gameObject.name.ToString());
+                flatAllSelected.Remove(square.gameObject.name.ToString());
                 square.transform.gameObject.GetComponentInChildren<TextMeshProUGUI>().color = Color.blue;
                 square.transform.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "O";
                 flatBlueSelected.Add(square.gameObject.name);
@@ -345,6 +371,8 @@ public class Play2DGame : MonoBehaviour
             }
             else if (currentTurn == redMat)
             {
+                flatBlueSelected.Remove(square.gameObject.name.ToString());
+                flatAllSelected.Remove(square.gameObject.name.ToString());
                 square.transform.gameObject.GetComponentInChildren<TextMeshProUGUI>().color = Color.red;
                 square.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "X";
                 flatRedSelected.Add(square.gameObject.name);

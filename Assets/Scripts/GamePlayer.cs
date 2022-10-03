@@ -89,26 +89,7 @@ public class GamePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        String allred ="Red: ";
-        String allblue = "Blue: ";
-        String all="Total: ";
-
-        for (int a = 0; a<RedSelected.Count; a++)
-        {
-            allred = allred + RedSelected[a].ToString();
-        }
-        for (int a = 0; a < BlueSelected.Count; a++)
-        {
-            allblue = allblue + BlueSelected[a].ToString();
-        }
-        for (int a = 0; a < AllSelected.Count; a++)
-        {
-            all = all + AllSelected[a].ToString();
-
-            Debug.Log(all);
-            Debug.Log(allred);
-            Debug.Log(allblue);
-        }
+        
 
 
 

@@ -25,9 +25,9 @@ public class GamePlayer : MonoBehaviour
     public bool onButton = false;
     public float rotspeed;
     public GameObject oldHover;
-    ArrayList AllSelected = new ArrayList();
-    ArrayList BlueSelected = new ArrayList();
-    ArrayList RedSelected = new ArrayList();
+    public ArrayList AllSelected = new ArrayList();
+    public ArrayList BlueSelected = new ArrayList();
+    public ArrayList RedSelected = new ArrayList();
     public bool turnPlayed;
     public bool gameWon = false;
     public bool blueWin;
@@ -89,6 +89,31 @@ public class GamePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        String allred ="Red: ";
+        String allblue = "Blue: ";
+        String all="Total: ";
+
+        for (int a = 0; a<RedSelected.Count; a++)
+        {
+            allred = allred + RedSelected[a].ToString();
+        }
+        for (int a = 0; a < BlueSelected.Count; a++)
+        {
+            allblue = allblue + BlueSelected[a].ToString();
+        }
+        for (int a = 0; a < AllSelected.Count; a++)
+        {
+            all = all + AllSelected[a].ToString();
+
+            Debug.Log(all);
+            Debug.Log(allred);
+            Debug.Log(allblue);
+        }
+
+
+
+
+
         checkForWin();
 
         if (gameWon)
@@ -148,6 +173,8 @@ public class GamePlayer : MonoBehaviour
                         else
                         {
                             isFlat = true;
+                            gameInProgress = false;
+                            rotspeed = 0;
                             flatBoard.GetComponent<Play2DGame>().currentTurn = activePlayerColor;
                             clickedCube = clickedObj.transform.gameObject;
                             clickedObj.transform.gameObject.GetComponent<MeshRenderer>().material = deafultMat;
@@ -163,10 +190,12 @@ public class GamePlayer : MonoBehaviour
                             {
                                 BlueSelected.Add(clickedObj.transform.gameObject.name);
                             }
-                            else if (activePlayerColor == redMat)
+                            else if (flatWinner == redMat)
                             {
                                 RedSelected.Add(clickedObj.transform.gameObject.name);
                             }
+
+
                         }
 
                     }
